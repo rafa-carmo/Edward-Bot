@@ -1,13 +1,22 @@
 site_name: Edward discord bot
 repo_url: https://github.com/rafa-carmo/Edward-Bot
+
 repo_name: rafa-carmo/Edward-Bot
 edit_uri: tree/main/docs
 
 theme:
   name: material
   language: pt-BR
+  icon:
+    repo: fontawesome/brands/github
+  palette: 
+    - scheme: slate
+      primary: blue
+      accent: indigo
 
 plugins:
+- search:
+    lang: pt-BR
 - autorefs
 - mkdocstrings:
     handlers:

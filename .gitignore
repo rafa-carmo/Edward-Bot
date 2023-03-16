@@ -176,4 +176,7 @@ pyrightconfig.json
 # Config File
 config.ini
 
+# Vscode personal config
+.vscode
+
 # End of https://www.toptal.com/developers/gitignore/api/python

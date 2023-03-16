@@ -5,6 +5,9 @@ description = ""
 authors = ["Rafael do Carmo <rafaelcarmo143@gmail.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+edward-bot = "edward.bot:start"
+
 [tool.poetry.dependencies]
 python = "^3.11"
 discord-py = "^2.2.2"

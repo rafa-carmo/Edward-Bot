@@ -614,6 +614,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cheatsheets/docker/docker-compose/" class="md-nav__link">
+        Docker Compose
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -864,10 +878,10 @@
 <span class="sd">    Este comando busca no meilisearch os comandos de acordo com a busca e retorna um embed com os links para a documentação</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs_url</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">meilisearch</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s2">&quot;http://localhost:7700&quot;</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">uid</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_indexes</span><span class="p">()[</span><span class="s2">&quot;results&quot;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">docs_url</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="nd">@app_commands</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
@@ -878,7 +892,7 @@
     <span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">embed</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span>
-                <span class="n">subject</span><span class="o">=</span><span class="n">assunto</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">busca</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+                <span class="n">subject</span><span class="o">=</span><span class="n">assunto</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">busca</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">doc_url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="n">SubjectNotFound</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">interaction</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
@@ -1055,7 +1069,7 @@
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">search</span><span class="p">(</span>
-    <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subjects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">client</span><span class="p">:</span> <span class="n">meilisearch</span><span class="o">.</span><span class="n">Client</span>
+    <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subjects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">client</span><span class="p">:</span> <span class="n">meilisearch</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">doc_url</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">discord</span><span class="o">.</span><span class="n">Embed</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_Função que faz a busca no Meiliesearch_</span>
 <span class="sd">    Args:</span>
@@ -1082,7 +1096,7 @@
     <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">hits</span><span class="p">[</span><span class="s2">&quot;hits&quot;</span><span class="p">]:</span>
         <span class="n">title</span> <span class="o">=</span> <span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
         <span class="n">slug</span> <span class="o">=</span> <span class="n">slugify</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:8000/cheatsheets/</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">slug</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">doc_url</span><span class="si">}</span><span class="s2">/cheatsheets/</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">slug</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="n">simple</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hit</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span>
         <span class="n">embed</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">simple</span><span class="si">}</span><span class="s2">](</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

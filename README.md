@@ -22,6 +22,11 @@ Documentação
     <a href="https://www.mkdocs.org/">MKdocs</a> 
 </p>
 
+Busca
+<p>
+    <a href="https://docs.meilisearch.com/">Meilisearch</a>
+</p>
+
 ## 👩‍💻 Comandos:
 
 Prefixo task

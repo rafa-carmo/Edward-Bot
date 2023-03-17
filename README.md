@@ -1,18 +1,24 @@
 # Edward Bot
 Um bot para discord feito em python.
 <br>
+## Tabela de conteudos <!-- omit in toc -->
+
+- [📖 Documentação](#-documentacao)
+- [🔧 Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [👩‍💻 Comandos](#-Comandos)
+
+## 📖 Documentacao
+Para saber mais sobre como funciona o bot acesse nossa [documentação](https://rafa-carmo.github.io/Edward-Bot/)
 ## Tecnologias utilizadas:
 <br>
 
 Bot
 <p>
-  <img src="https://discordpy.readthedocs.io/en/stable/_static/discord_py_logo.ico" alt="Discord.py" width="100" /> | 
     <a href="https://discordpy.readthedocs.io/">Discord.py</a> 
 </p>
 <br>
 Documentação
 <p>
-  <img src="https://www.mkdocs.org/img/favicon.ico" alt="MKdocs" width="100" /> | 
     <a href="https://www.mkdocs.org/">MKdocs</a> 
 </p>
 
@@ -20,14 +26,20 @@ Documentação
 <br>
 ## Comandos:
 Prefixo task
-```
-lint # Verifica os erros de formatação.
-format # Formata o codigo automaticamente
-docs # Inicia o servidor da documentação
-test # Roda os testes do projeto
-start_bot # Inicia o bot
-```
-Exemplo:
 ```bash
-task test
+
+# Verifica os erros de formatação.
+lint 
+
+# Formata o codigo automaticamente
+format 
+
+# Inicia o servidor da documentação
+docs 
+
+# Roda os testes do projeto
+test 
+
+# Inicia o bot
+start_bot 
 ```

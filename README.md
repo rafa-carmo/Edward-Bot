@@ -9,7 +9,7 @@ Um bot para discord feito em python.
 
 ## 📖 Documentacao
 Para saber mais sobre como funciona o bot acesse nossa [documentação](https://rafa-carmo.github.io/Edward-Bot/)
-## Tecnologias utilizadas:
+## 🔧 Tecnologias utilizadas:
 <br>
 
 Bot
@@ -22,10 +22,10 @@ Documentação
     <a href="https://www.mkdocs.org/">MKdocs</a> 
 </p>
 
+## 👩‍💻 Comandos:
 
-<br>
-## Comandos:
 Prefixo task
+
 ```bash
 
 # Verifica os erros de formatação.

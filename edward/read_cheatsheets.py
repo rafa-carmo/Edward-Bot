@@ -1,4 +1,5 @@
 import os
+import uuid
 
 import meilisearch
 
@@ -30,17 +31,43 @@ def get_sections(content: list[str]) -> list[dict[str, str]]:
     return content_section
 
 
-def add_index(client, file, name):
-    with open(file, "r", encoding="utf-8") as f:
+def delete_index_if_exists(client, index):
+    try:
+        index_meilisearch = client.get_index(index)
+        client.delete_index(index)
+    except meilisearch.errors.MeiliSearchApiError as e:
+        return
+
+
+def add_index(client, file_dir, file_name, name):
+    with open(file_dir, "r", encoding="utf-8") as f:
         content = f.read().split("\n")
 
     sections = get_sections(content)
     sections.pop(0)
-
+    if len(sections) <= 0:
+        return
     for key, section in enumerate(sections):
-        sections[key]["id"] = key + 1
+        sections[key]["file_name"] = file_name
+        sections[key]["id"] = str(uuid.uuid4())
+    client.index(name).update_documents(sections)
 
-    client.index(name).add_documents(sections)
+
+def clear_meilisearch(url: str):
+    client = meilisearch.Client(url)
+    while True:
+        indexes = client.get_indexes()
+
+        size = len(indexes["results"])
+        for index in indexes["results"]:
+            client.index(index.uid).delete()
+        if len(indexes["results"]) == indexes["total"]:
+            break
+
+
+def run_clear():
+    url = str(input("Digite a url do meilisearch para limpar: "))
+    clear_meilisearch(url)
 
 
 def run():
@@ -48,7 +75,6 @@ def run():
 
     for root, dirs, files in os.walk(os.path.join("docs", "cheatsheets")):
         path = root.split(os.sep)
-
         for file in files:
             if ".md" in file:
-                add_index(client, f"{root}{os.sep}{file}", path[-1])
+                add_index(client, f"{root}{os.sep}{file}", file[:-3], path[-1])

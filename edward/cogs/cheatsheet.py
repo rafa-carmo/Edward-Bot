@@ -4,6 +4,8 @@ from discord import app_commands
 from discord.ext import commands
 from slugify import slugify
 
+from edward.bot import Bot
+
 
 class CheatSheet(commands.Cog):
     """__Comando para fazer a consulta de cheatsheets__
@@ -18,10 +20,10 @@ class CheatSheet(commands.Cog):
     Este comando busca no meilisearch os comandos de acordo com a busca e retorna um embed com os links para a documentação
     """
 
-    def __init__(self):
+    def __init__(self, docs_url: str):
         self.client = meilisearch.Client("http://localhost:7700")
-
         self.indexes = [index.uid for index in self.client.get_indexes()["results"]]
+        self.url = docs_url
         super().__init__()
 
     @app_commands.command(
@@ -32,7 +34,11 @@ class CheatSheet(commands.Cog):
     ):
         try:
             embed = search(
-                subject=assunto, search=busca, subjects=self.indexes, client=self.client
+                subject=assunto,
+                search=busca,
+                subjects=self.indexes,
+                client=self.client,
+                doc_url=self.url,
             )
         except SubjectNotFound:
             await interaction.response.send_message(
@@ -48,7 +54,11 @@ class CheatSheet(commands.Cog):
 
 
 def search(
-    subject: str, search: str, subjects: list[str], client: meilisearch.Client
+    subject: str,
+    search: str,
+    subjects: list[str],
+    client: meilisearch.Client,
+    doc_url: str,
 ) -> discord.Embed:
     """_Função que faz a busca no Meiliesearch_
     Args:
@@ -75,7 +85,9 @@ def search(
     for hit in hits["hits"]:
         title = hit["title"]
         slug = slugify(title, "-")
-        url = f"http://127.0.0.1:8000/cheatsheets/{subject}#{slug}"
+
+        file_name = f"/{hit['file_name']}/" if hit["file_name"] != "index" else ""
+        url = f"{doc_url}/cheatsheets/{subject}{file_name}#{slug}"
 
         simple = f"{hit['content'][0:50]}..."
         embed.add_field(name=title, value=f"[{simple}]({url})", inline=False)
@@ -93,6 +105,7 @@ class SearchNotFound(Exception):
         super().__init__(message)
 
 
-async def setup(bot: commands.Bot):
-    await bot.add_cog(CheatSheet())
+async def setup(bot: Bot):
+    config = bot.config
+    await bot.add_cog(CheatSheet(docs_url=config.docs_url))
     print("✔ - Cog CheatSheet synced")

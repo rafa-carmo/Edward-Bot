@@ -10,6 +10,7 @@ class Ini:
         self.token: str
         self.INI_FILE = BASE_DIR / filename
         self.__load_ini_file()
+        self.docs_url: str
 
     def __load_ini_file(self):
         if not os.path.isfile(self.INI_FILE):
@@ -21,6 +22,7 @@ class Ini:
         self.config = config
         try:
             self.token = config["CREDENTIALS"]["token"]
+            self.docs_url = config["CREDENTIALS"]["docs_url"]
         except KeyError:
             raise KeyError(
                 "missing paramethers in config file, run with --config para configurar."

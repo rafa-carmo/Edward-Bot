@@ -16,9 +16,10 @@ class Bot(commands.Bot):
 
     """
 
-    def __init__(self, servers: list[int] = []):
+    def __init__(self, config: Ini, servers: list[int] = []):
         intents = discord.Intents.default()
         intents.message_content = True
+        self.config = config
         self.sync = False
         self.servers = (
             [discord.Object(id=server) for server in servers]
@@ -35,14 +36,14 @@ class Bot(commands.Bot):
             for command in COGS_DIR.glob("*.py"):
                 if command.name != "__init__.py":
                     await self.load_extension(f"edward.cogs.{command.name[:-3]}")
-                    
+
             await self.tree.sync(guild=self.servers)
 
         print("BOT Started")
 
     async def on_message(self, message: discord.Message):
         """
-            Função para interceptar todas as mensagens que o bot tem acesso para aplicar os comandos.
+        Função para interceptar todas as mensagens que o bot tem acesso para aplicar os comandos.
         """
         if message.author == self.user:
             return
@@ -55,6 +56,6 @@ class Bot(commands.Bot):
 
 
 def start():
-    bot = Bot()
     config = Ini()
-    bot.run(config.token, log_handler=None)
+    bot = Bot(config=config)
+    bot.run(token=config.token)

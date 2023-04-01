@@ -21,7 +21,7 @@ class CheatSheet(commands.Cog):
     """
 
     def __init__(self, docs_url: str):
-        self.client = meilisearch.Client("http://localhost:7700")
+        self.client = meilisearch.Client("http://192.168.5.27:7700")
         self.indexes = [index.uid for index in self.client.get_indexes()["results"]]
         self.url = docs_url
         super().__init__()

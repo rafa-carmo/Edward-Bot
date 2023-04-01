@@ -40,4 +40,4 @@ jobs:
         run: poetry install --only doc
 
       - name: Pubish docs on Github
-        run: poetry run mkdocs gh-deploy
+        run: poetry run mkdocs gh-deploy --force --clean --verbose

@@ -53,6 +53,10 @@ class CheatSheet(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
 
+def get_hits(client: meilisearch.Client, subject: str, search: str):
+    return client.index(subject).search(search)
+
+
 def search(
     subject: str,
     search: str,
@@ -76,7 +80,8 @@ def search(
     if subject not in subjects:
         raise SubjectNotFound()
 
-    hits = client.index(subject).search(search)
+    hits = get_hits(client, subject, search)
+
     embed = discord.Embed()
     embed.title = "Areas Possiveis:"
     if len(hits["hits"]) <= 0:

@@ -59,3 +59,6 @@ def start():
     config = Ini()
     bot = Bot(config=config)
     bot.run(token=config.token)
+
+if __name__ == "__main__":
+    start()

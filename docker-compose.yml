@@ -1,0 +1,12 @@
+version: "3"
+services:
+  bot:
+    build: 
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: "Edward-Bot"
+
+    volumes:
+      - ./edward/config.ini:/downloader/edward/config.ini
+    restart: always
+    command: poetry run edward-bot

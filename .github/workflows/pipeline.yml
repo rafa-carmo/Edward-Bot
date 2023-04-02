@@ -1,5 +1,9 @@
 name: Pipeline
-on: [push, pull_request]
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   tests:
@@ -22,22 +26,3 @@ jobs:
 
       - name: Run Tests
         run: poetry run task test --cov-report=xml
-  publish_docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Copy files from repo
-        uses: actions/checkout@v3
-
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install Poetry
-        run: pip install poetry
-      
-      - name: Install Dependencies
-        run: poetry install --only doc
-
-      - name: Pubish docs on Github
-        run: poetry run mkdocs  gh-deploy --github-token "${GH_TOKEN}"

@@ -21,7 +21,7 @@ class CheatSheet(commands.Cog):
     """
 
     def __init__(self, docs_url: str):
-        self.client = meilisearch.Client("http://localhost:7700")
+        self.client = meilisearch.Client("http://192.168.5.27:7700")
         self.indexes = [index.uid for index in self.client.get_indexes()["results"]]
         self.url = docs_url
         super().__init__()
@@ -53,6 +53,10 @@ class CheatSheet(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
 
+def get_hits(client: meilisearch.Client, subject: str, search: str):
+    return client.index(subject).search(search)
+
+
 def search(
     subject: str,
     search: str,
@@ -76,7 +80,8 @@ def search(
     if subject not in subjects:
         raise SubjectNotFound()
 
-    hits = client.index(subject).search(search)
+    hits = get_hits(client, subject, search)
+
     embed = discord.Embed()
     embed.title = "Areas Possiveis:"
     if len(hits["hits"]) <= 0:

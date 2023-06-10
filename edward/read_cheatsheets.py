@@ -71,7 +71,7 @@ def run_clear():
 
 
 def run():
-    client = meilisearch.Client("http://localhost:7700")
+    client = meilisearch.Client("http://192.168.5.27:7700")
 
     for root, dirs, files in os.walk(os.path.join("docs", "cheatsheets")):
         path = root.split(os.sep)

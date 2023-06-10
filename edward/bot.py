@@ -51,7 +51,7 @@ class Bot(commands.Bot):
             ctx = await self.get_context(message)
             if ctx.valid:
                 await self.invoke(ctx)
-
+        print(message.channel.type)
         await self.process_commands(message)
 
 

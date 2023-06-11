@@ -14,6 +14,8 @@ clear-meilisearch = "edward.read_cheatsheets:run_clear"
 python = "^3.11"
 discord-py = "^2.2.2"
 python-slugify = "^8.0.1"
+python-dotenv = "^1.0.0"
+openai = "^0.27.8"
 
 
 [tool.poetry.group.dev.dependencies]

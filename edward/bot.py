@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from edward.config import BASE_DIR, Ini
+from edward.services.gpt import getResponse
 
 COGS_DIR = BASE_DIR / "cogs"
 
@@ -51,7 +52,13 @@ class Bot(commands.Bot):
             ctx = await self.get_context(message)
             if ctx.valid:
                 await self.invoke(ctx)
-        print(message.channel.type)
+
+        if not hasattr(message.channel, "threads"):
+            if "GPT" in message.channel.name:
+                if message.content.isprintable:
+                    await message.reply(getResponse(message.content))
+                    return
+
         await self.process_commands(message)
 
 
